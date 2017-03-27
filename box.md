@@ -1,4 +1,5 @@
-#盒子模型#
+# 盒子模型 #
+
 ## 盒子模型的内容构成 ##
  ![](http://i.imgur.com/lcWXbjf.png)
 
