@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>利用canvas和JavaScript实现排序</title>
+	</head>
+	<body>
+		<div>
+			<span>插入排序：</span>
+			<button id="make">生成</button>
+			<button id="sort">排序</button>
+		</div>
+		<canvas id="canvas" width="800px" height="600px"></canvas>
+	</body>
+	<script type="text/javascript">
+//		window.onload = function(){
+			var num=[10,2,13,4,5,6,34,20,23,12]
+			console.log(num);
+			var Make = document.getElementById("make");
+			var sort = document.getElementById("sort");
+			var can = document.getElementById("canvas");
+			var context = can.getContext("2d");
+			//画轴
+			function init(){
+				context.beginPath();
+				context.moveTo(0,0);
+				context.lineTo(0,600);
+				context.lineTo(800,600);
+				context.stroke();
+				context.closePath();
+				DrawRect(num);
+			}
+			init(num);
+			//画矩形块
+			function DrawRect(num){
+				
+				Cwidth = can.width;
+				Cheigth = can.height;
+				context.clearRect(1, 0, Cwidth-1, Cheigth-1);
+				w = Cheigth/(num.length*2);
+				for(let i = 1;i<num.length ; i++){
+					
+					context.fillStyle = "black";
+//					console.log((2*i-1)*40,Cheigth - num[i],w,num[i]);
+					context.fillRect((2*i-1)*w,Cheigth - num[i]*10,w,num[i]*10);
+				}
+				
+			}
+			
+			
+			//排序：插入排序
+			function Insert(num){
+				let t = 0;
+				for(let i=1;i<num.length;i++){
+					
+					let targe = num[i];
+					let j = i-1 ;
+					while(j>=0 && targe < num[j]){
+						num[j+1] = num[j];
+						j--;
+						
+					}
+					num[j+1] = targe;
+					t++;
+					let _num = CopyNum(num);
+					console.log(num);
+					setTimeout(function(){
+						DrawRect(_num);
+					},500 *t);
+				}
+				
+				return num;
+			}
+			
+			
+			console.log(num);
+			//copy
+			function CopyNum(num){
+				let _num = [];
+				//_num.length = num.length;
+				
+				for(let i=0;i<num.length;i++){
+					_num[i] = num[i];
+				}
+				return _num;
+			}
+//			
+			sort.onclick = function(){
+				Insert(num);
+			}
+//		}
+	</script>
+</html>
