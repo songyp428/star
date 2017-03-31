@@ -6,50 +6,94 @@
 	</head>
 	<body>
 		<div>
+			<input type="text" id="insert_in" name = "sort" placeholder="请输入数组的大小">
 			<span>插入排序：</span>
-			<button id="make">生成</button>
-			<button id="sort">排序</button>
+			<button id="insert_make">生成</button>
+			<button id="insert_sort">排序</button>
 		</div>
-		<canvas id="canvas" width="800px" height="600px"></canvas>
+		<canvas id="insert_canvas" width="800px" height="500px"></canvas>
 	</body>
 	<script type="text/javascript">
 //		window.onload = function(){
-			var num=[10,2,13,4,5,6,34,20,23,12]
-			console.log(num);
-			var Make = document.getElementById("make");
-			var sort = document.getElementById("sort");
-			var can = document.getElementById("canvas");
-			var context = can.getContext("2d");
+//			var num=[10,2,13,4,5,6,34,20,23,12];
+			var insert_num = [];
+			var insert_input = document.getElementById("insert_in");
+			var insert_make = document.getElementById("insert_make");
+			var insert_sort = document.getElementById("insert_sort");
+			var insert_canvas = document.getElementById("insert_canvas");
+			var insert_context = insert_canvas.getContext("2d");
 			//画轴
-			function init(){
+			function init(canvas,context){
 				context.beginPath();
 				context.moveTo(0,0);
-				context.lineTo(0,600);
-				context.lineTo(800,600);
+				context.lineTo(0,canvas.height);
+				context.lineTo(canvas.width,canvas.height);
 				context.stroke();
-				context.closePath();
-				DrawRect(num);
+				context.closePath();				
+			}		
+			init(insert_canvas,insert_context);
+			
+			//随机生成数组
+			function MakeArr(size){
+				let _arr = [];
+				for(let i = 0;i<size;i++){
+					_arr[i] = i+1 ;
+				}
+				for(let i = 0; i<size ; i++){
+					let j = parseInt(Math.random()*size) ;
+					let temp = _arr[j];
+					_arr[j] = _arr[i];
+					_arr[i] = temp;
+				}
+				return _arr;
 			}
-			init(num);
+			
+			function Click_Sort(make,sort,input_size,canvas,context,num){
+	//			生成随机数组
+				make.onclick = function(){
+					let size = parseInt(input_size.value);
+					num = MakeArr(size);
+					Draw(canvas,context,num);
+				}
+	//			点击排序
+				sort.onclick = function(){
+					Insert(canvas,context,num);
+				}
+			}
+			Click_Sort(insert_make,insert_sort,insert_input,insert_canvas,insert_context,insert_num)
+			
+//			
 			//画矩形块
-			function DrawRect(num){
-				
-				Cwidth = can.width;
-				Cheigth = can.height;
+			function Draw(canvas,context,num,flag){
+				let Cwidth = canvas.width;
+				let Cheigth = canvas.height;
 				context.clearRect(1, 0, Cwidth-1, Cheigth-1);
-				w = Cheigth/(num.length*2);
-				for(let i = 1;i<num.length ; i++){
+				let max = Math.max.apply(null,num);
+				//let w = 2*Cwidth/(3*num.length-1);
+				let w = Cwidth/(2*num.length-1);
+				let _blank = w/1.5;
+				let cx = Cwidth*0.06;//
+				console.log("num size = "+num.length);
+				for(let i = 0;i<num.length ; i++){	
+					if(flag == i){
+						context.fillStyle = "red";
+					}else{
+						context.fillStyle = "black";
+					}
 					
-					context.fillStyle = "black";
-//					console.log((2*i-1)*40,Cheigth - num[i],w,num[i]);
-					context.fillRect((2*i-1)*w,Cheigth - num[i]*10,w,num[i]*10);
+					DrawRect(context,cx,Cheigth,w,num[i]*Cheigth*0.9/max);
+					//console.log(cx);
+					cx+=(_blank+w);
 				}
 				
 			}
 			
+			function DrawRect(context,cx,cy,width,height){
+				context.fillRect(cx,cy-height,width,height);
+			}
 			
 			//排序：插入排序
-			function Insert(num){
+			function Insert(canvas,context,num){
 				let t = 0;
 				for(let i=1;i<num.length;i++){
 					
@@ -63,9 +107,9 @@
 					num[j+1] = targe;
 					t++;
 					let _num = CopyNum(num);
-					console.log(num);
+					console.log(_num);
 					setTimeout(function(){
-						DrawRect(_num);
+						Draw(canvas,context,_num,i);
 					},500 *t);
 				}
 				
@@ -73,22 +117,15 @@
 			}
 			
 			
-			console.log(num);
 			//copy
 			function CopyNum(num){
 				let _num = [];
-				//_num.length = num.length;
-				
 				for(let i=0;i<num.length;i++){
 					_num[i] = num[i];
 				}
 				return _num;
 			}
-//			
-//			点击排序
-			sort.onclick = function(){
-				Insert(num);
-			}
+
 //		}
 	</script>
 </html>
