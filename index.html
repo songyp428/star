@@ -5,23 +5,44 @@
 		<title>利用canvas和JavaScript实现排序</title>
 	</head>
 	<body>
+		<!--插入排序-->
 		<div>
-			<input type="text" id="insert_in" name = "sort" placeholder="请输入数组的大小">
-			<span>插入排序：</span>
-			<button id="insert_make">生成</button>
-			<button id="insert_sort">排序</button>
+			<div>
+				<input type="text" id="insert_in" name = "sort" value="请输入数组的大小" placeholder="请输入数组的大小">
+				<span>插入排序：</span>
+				<button id="insert_make">生成</button>
+				<button id="insert_sort">排序</button>
+		    </div>
+		    <canvas id="insert_canvas" width="800px" height="500px"></canvas>
 		</div>
-		<canvas id="insert_canvas" width="800px" height="500px"></canvas>
+		<!--冒泡排序-->
+		<div>
+			<div>
+				<input type="text" id="bublle_in" name = "sort" value="请输入数组的大小" placeholder="请输入数组的大小">
+				<span>冒泡排序：</span>
+				<button id="bubble_make">生成</button>
+				<button id="bubble_sort">排序</button>
+		    </div>
+		    <canvas id="bubble_canvas" width="800px" height="500px"></canvas>
+		</div>
 	</body>
 	<script type="text/javascript">
 //		window.onload = function(){
-//			var num=[10,2,13,4,5,6,34,20,23,12];
+			//插入排序
 			var insert_num = [];
+			
 			var insert_input = document.getElementById("insert_in");
 			var insert_make = document.getElementById("insert_make");
 			var insert_sort = document.getElementById("insert_sort");
 			var insert_canvas = document.getElementById("insert_canvas");
 			var insert_context = insert_canvas.getContext("2d");
+			//冒泡排序
+			var bubble_num = [];
+			var bubble_input = document.getElementById("bublle_in");
+			var bubble_make = document.getElementById("bubble_make");
+	    	var bubble_sort = document.getElementById("bubble_sort");
+			var bubble_canvas = document.getElementById("bubble_canvas");
+			var bubble_context = bubble_canvas.getContext("2d");
 			//画轴
 			function init(canvas,context){
 				context.beginPath();
@@ -30,9 +51,10 @@
 				context.lineTo(canvas.width,canvas.height);
 				context.stroke();
 				context.closePath();				
-			}		
-			init(insert_canvas,insert_context);
+			}	
 			
+			init(insert_canvas,insert_context);
+			init(bubble_canvas,bubble_context);
 			//随机生成数组
 			function MakeArr(size){
 				let _arr = [];
@@ -48,7 +70,7 @@
 				return _arr;
 			}
 			
-			function Click_Sort(make,sort,input_size,canvas,context,num){
+			function Click_Sort(name,make,sort,input_size,canvas,context,num){
 	//			生成随机数组
 				make.onclick = function(){
 					let size = parseInt(input_size.value);
@@ -57,14 +79,15 @@
 				}
 	//			点击排序
 				sort.onclick = function(){
-					Insert(canvas,context,num);
+					eval(name+'(canvas,context,num)');
+					
 				}
 			}
-			Click_Sort(insert_make,insert_sort,insert_input,insert_canvas,insert_context,insert_num)
-			
+			Click_Sort('Insert_sort',insert_make,insert_sort,insert_input,insert_canvas,insert_context,insert_num);
+			Click_Sort('Bubble_sort',bubble_make,bubble_sort,bubble_input,bubble_canvas,bubble_context,bubble_num);
 //			
 			//画矩形块
-			function Draw(canvas,context,num,flag){
+			function Draw(canvas,context,num,flag1,flag2){
 				let Cwidth = canvas.width;
 				let Cheigth = canvas.height;
 				context.clearRect(1, 0, Cwidth-1, Cheigth-1);
@@ -73,10 +96,12 @@
 				let w = Cwidth/(2*num.length-1);
 				let _blank = w/1.5;
 				let cx = Cwidth*0.06;//
-				console.log("num size = "+num.length);
+				//console.log("num size = "+num.length);
 				for(let i = 0;i<num.length ; i++){	
-					if(flag == i){
+					if(flag1 == i){
 						context.fillStyle = "red";
+					}else if(flag2 == i){
+						context.fillStyle = "blue";
 					}else{
 						context.fillStyle = "black";
 					}
@@ -93,7 +118,7 @@
 			}
 			
 			//排序：插入排序
-			function Insert(canvas,context,num){
+			function Insert_sort(canvas,context,num){
 				let t = 0;
 				for(let i=1;i<num.length;i++){
 					
@@ -107,7 +132,7 @@
 					num[j+1] = targe;
 					t++;
 					let _num = CopyNum(num);
-					console.log(_num);
+					//console.log(_num);
 					setTimeout(function(){
 						Draw(canvas,context,_num,i);
 					},500 *t);
@@ -116,7 +141,31 @@
 				return num;
 			}
 			
-			
+			function Bubble_sort(canvas,context,num){
+				let t = 0;
+				for(let i=0;i<num.length;i++){
+					for(let j=num.length-1;j>i;j--)
+					{
+						
+						if(num[j]<num[j-1])
+						{
+							let temp = num[j-1];
+							num[j-1] = num[j];
+							num[j] = temp;
+						}
+						t++;
+						let _num = CopyNum(num);
+						//console.log(_num);
+						setTimeout(function(){
+							Draw(canvas,context,_num,i-1,j-1);
+						},500 *t);
+					}
+					
+				}
+				return num;
+				
+			}
+
 			//copy
 			function CopyNum(num){
 				let _num = [];
