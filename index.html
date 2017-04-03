@@ -8,8 +8,8 @@
 		<!--插入排序-->
 		<div>
 			<div>
-				<input type="text" id="insert_in" name = "sort" value="请输入数组的大小" placeholder="请输入数组的大小">
 				<span>插入排序：</span>
+				<input type="text" id="insert_in" name = "sort"  placeholder="请输入数组的大小">				
 				<button id="insert_make">生成</button>
 				<button id="insert_sort">排序</button>
 		    </div>
@@ -18,12 +18,33 @@
 		<!--冒泡排序-->
 		<div>
 			<div>
-				<input type="text" id="bublle_in" name = "sort" value="请输入数组的大小" placeholder="请输入数组的大小">
 				<span>冒泡排序：</span>
+				<input type="text" id="bublle_in" name = "sort"  placeholder="请输入数组的大小">				
 				<button id="bubble_make">生成</button>
 				<button id="bubble_sort">排序</button>
 		    </div>
 		    <canvas id="bubble_canvas" width="800px" height="500px"></canvas>
+		</div>
+		<!--冒泡排序值鸡尾酒排序-->
+		<div>
+			<div>
+				<span>冒泡排序之鸡尾酒排序：</span>
+				<input type="text" id="cbublle_in" name = "sort"  placeholder="请输入数组的大小">				
+				<button id="cbubble_make">生成</button>
+				<button id="cbubble_sort">排序</button>
+		    </div>
+		    <canvas id="cbubble_canvas" width="800px" height="500px"></canvas>
+		</div>
+		
+		<!-- 希尔排序-->
+		<div>
+			<div>
+				<span>希尔排序：</span>
+				<input type="text" id="shell_in" name = "sort"  placeholder="请输入数组的大小">
+				<button id="shell_make">生成</button>
+				<button id="shell_sort">排序</button>
+		    </div>
+		    <canvas id="shell_canvas" width="800px" height="500px"></canvas>
 		</div>
 	</body>
 	<script type="text/javascript">
@@ -43,6 +64,22 @@
 	    	var bubble_sort = document.getElementById("bubble_sort");
 			var bubble_canvas = document.getElementById("bubble_canvas");
 			var bubble_context = bubble_canvas.getContext("2d");
+			
+			//冒泡排序
+			var cbubble_num = [];
+			var cbubble_input = document.getElementById("cbublle_in");
+			var cbubble_make = document.getElementById("cbubble_make");
+	    	var cbubble_sort = document.getElementById("cbubble_sort");
+			var cbubble_canvas = document.getElementById("cbubble_canvas");
+			var cbubble_context = cbubble_canvas.getContext("2d");
+			
+			//冒泡排序
+			var shell_num = [];
+			var shell_input = document.getElementById("shell_in");
+			var shell_make = document.getElementById("shell_make");
+	    	var shell_sort = document.getElementById("shell_sort");
+			var shell_canvas = document.getElementById("shell_canvas");
+			var shell_context = shell_canvas.getContext("2d");
 			//画轴
 			function init(canvas,context){
 				context.beginPath();
@@ -55,6 +92,8 @@
 			
 			init(insert_canvas,insert_context);
 			init(bubble_canvas,bubble_context);
+			init(cbubble_canvas,cbubble_context);
+			init(shell_canvas,shell_context);
 			//随机生成数组
 			function MakeArr(size){
 				let _arr = [];
@@ -83,9 +122,13 @@
 					
 				}
 			}
+			
 			Click_Sort('Insert_sort',insert_make,insert_sort,insert_input,insert_canvas,insert_context,insert_num);
 			Click_Sort('Bubble_sort',bubble_make,bubble_sort,bubble_input,bubble_canvas,bubble_context,bubble_num);
-//			
+			Click_Sort('Cbubble_sort',cbubble_make,cbubble_sort,cbubble_input,cbubble_canvas,cbubble_context,cbubble_num);
+			Click_Sort('Shell_sort',shell_make,shell_sort,shell_input,shell_canvas,shell_context,shell_num);
+
+//
 			//画矩形块
 			function Draw(canvas,context,num,flag1,flag2){
 				let Cwidth = canvas.width;
@@ -117,7 +160,7 @@
 				context.fillRect(cx,cy-height,width,height);
 			}
 			
-			//排序：插入排序
+			//插入排序
 			function Insert_sort(canvas,context,num){
 				let t = 0;
 				for(let i=1;i<num.length;i++){
@@ -135,12 +178,12 @@
 					//console.log(_num);
 					setTimeout(function(){
 						Draw(canvas,context,_num,i);
-					},500 *t);
+					},1000 *t);
 				}
 				
 				return num;
 			}
-			
+            //冒泡排序			
 			function Bubble_sort(canvas,context,num){
 				let t = 0;
 				for(let i=0;i<num.length;i++){
@@ -158,14 +201,84 @@
 						//console.log(_num);
 						setTimeout(function(){
 							Draw(canvas,context,_num,i-1,j-1);
-						},500 *t);
+						},300 *t);
 					}
 					
 				}
 				return num;
 				
 			}
-
+            
+            //冒泡排序之鸡尾酒排序
+            function Cbubble_sort(canvas,context,num){
+            	let left = 0;
+            	let right = num.length-1;
+            	let t =0;
+            	while(left<right){
+            		for(let i = left;i<right;i++){
+            			if(num[i]>num[i+1]){
+            				let temp = num[i];
+            				num[i] = num[i+1];
+            				num[i+1] = temp;
+            			}	 
+            			t++;
+		            	let _num = CopyNum(num);
+		            	setTimeout(function(){
+		            		Draw(canvas,context,_num,i+1);
+		            	},300*t);
+            		}
+            		
+            		right--;
+            		for(let j= right;j>left;j--){
+            			if(num[j]<num[j-1]){
+            				let temp1 = num[j];
+            				num[j] = num[j-1];
+            				num[j-1] = temp1;
+            			}
+            			t++;
+		            	let _num1 = CopyNum(num);
+		            	setTimeout(function(){
+		            	    Draw(canvas,context,_num1,j);
+		            			
+		            	},300*t)
+            		}
+            		
+            		left++;
+            	
+	            	
+            	}
+            }
+            
+            //希尔排序
+            function Shell_sort(canvas,context,num){
+            	let h =0;
+            	let t =0;
+            	while(h<=num.length){
+            		h = h*3 + 1;
+            	}
+            	//console.log(h);
+            	while(h>=1){
+            		for(i = h;i<num.length;i++){
+            			j = i - h ;
+            			//console.log("i="+i+",j= "+j+",h="+h);
+            			let temp  = num[i];
+            			while((j>=0)&&(num[j]>temp))
+            			{
+            				num[j+h] = num[j];
+            				j = j - h;
+            			}
+            			num[j+h] = temp;
+            		}
+            		t++;
+            		let _num = CopyNum(num);
+            		setTimeout(function(){
+            			Draw(canvas,context,_num)
+            		},1000*t)
+            		h = (h-1)/3;
+            	}
+            	return num;
+            }
+            
 			//copy
 			function CopyNum(num){
 				let _num = [];
