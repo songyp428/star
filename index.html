@@ -15,6 +15,16 @@
 		    </div>
 		    <canvas id="insert_canvas" width="800px" height="500px"></canvas>
 		</div>
+		<!-- 希尔排序-->
+		<div>
+			<div>
+				<span>插入排序的改进：希尔排序：</span>
+				<input type="text" id="shell_in" name = "sort"  placeholder="请输入数组的大小">
+				<button id="shell_make">生成</button>
+				<button id="shell_sort">排序</button>
+		    </div>
+		    <canvas id="shell_canvas" width="800px" height="500px"></canvas>
+		</div>
 		<!--冒泡排序-->
 		<div>
 			<div>
@@ -36,16 +46,17 @@
 		    <canvas id="cbubble_canvas" width="800px" height="500px"></canvas>
 		</div>
 		
-		<!-- 希尔排序-->
+		<!--选择排序-->
 		<div>
 			<div>
-				<span>希尔排序：</span>
-				<input type="text" id="shell_in" name = "sort"  placeholder="请输入数组的大小">
-				<button id="shell_make">生成</button>
-				<button id="shell_sort">排序</button>
+				<span>选择排序：</span>
+				<input type="text" id="select_in" name = "sort"  placeholder="请输入数组的大小">				
+				<button id="select_make">生成</button>
+				<button id="select_sort">排序</button>
 		    </div>
-		    <canvas id="shell_canvas" width="800px" height="500px"></canvas>
+		    <canvas id="select_canvas" width="800px" height="500px"></canvas>
 		</div>
+		
 	</body>
 	<script type="text/javascript">
 //		window.onload = function(){
@@ -65,7 +76,7 @@
 			var bubble_canvas = document.getElementById("bubble_canvas");
 			var bubble_context = bubble_canvas.getContext("2d");
 			
-			//冒泡排序
+			//冒泡排序之鸡尾酒排序
 			var cbubble_num = [];
 			var cbubble_input = document.getElementById("cbublle_in");
 			var cbubble_make = document.getElementById("cbubble_make");
@@ -73,7 +84,15 @@
 			var cbubble_canvas = document.getElementById("cbubble_canvas");
 			var cbubble_context = cbubble_canvas.getContext("2d");
 			
-			//冒泡排序
+			//冒泡排序之鸡尾酒排序
+			var select_num = [];
+			var select_input = document.getElementById("select_in");
+			var select_make = document.getElementById("select_make");
+	    	var select_sort = document.getElementById("select_sort");
+			var select_canvas = document.getElementById("select_canvas");
+			var select_context = select_canvas.getContext("2d");
+			
+			//希尔排序
 			var shell_num = [];
 			var shell_input = document.getElementById("shell_in");
 			var shell_make = document.getElementById("shell_make");
@@ -93,6 +112,7 @@
 			init(insert_canvas,insert_context);
 			init(bubble_canvas,bubble_context);
 			init(cbubble_canvas,cbubble_context);
+			init(select_canvas,select_context);
 			init(shell_canvas,shell_context);
 			//随机生成数组
 			function MakeArr(size){
@@ -126,6 +146,7 @@
 			Click_Sort('Insert_sort',insert_make,insert_sort,insert_input,insert_canvas,insert_context,insert_num);
 			Click_Sort('Bubble_sort',bubble_make,bubble_sort,bubble_input,bubble_canvas,bubble_context,bubble_num);
 			Click_Sort('Cbubble_sort',cbubble_make,cbubble_sort,cbubble_input,cbubble_canvas,cbubble_context,cbubble_num);
+			Click_Sort('Select_sort',select_make,select_sort,select_input,select_canvas,select_context,select_num);
 			Click_Sort('Shell_sort',shell_make,shell_sort,shell_input,shell_canvas,shell_context,shell_num);
 
 //
@@ -247,8 +268,40 @@
             	
 	            	
             	}
+            	return num;
             }
-            
+            //选择排序
+            function Select_sort(canvas,context,num){
+            	let t = 0;
+            	let si,smin;
+            	for(let i=0;i<=num.length-2;i++){
+            		let min = i;
+            		
+            		for(let j =i+1;j<=num.length-1;j++){
+            			if(num[j]<num[min]){
+            				min = j;
+            			}
+            		}
+            		t++;
+            		let _num = CopyNum(num);
+            		setTimeout(function(){
+            			Draw(canvas,context,_num,i,min);
+            		},500*t);
+            		if(min!=i){
+            			let temp = num[i];
+            			num[i] =num[min];
+            			num[min] = temp;
+            		}
+            		si = i;
+            		smin = min;
+            	}
+            	t++;
+            	let _num = CopyNum(num);
+            		setTimeout(function(){
+            			Draw(canvas,context,_num,si,smin);
+            		},500*t);
+            	return num;
+            }
             //希尔排序
             function Shell_sort(canvas,context,num){
             	let h =0;
