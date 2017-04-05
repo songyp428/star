@@ -1,0 +1,17 @@
+*{ margin:0; padding:0;}
+.v_shows{ width:600px; margin:auto;background:ivory;}
+.v_caption{ width:600px; height:30px;}
+.v_caption p{ float:left; margin-left:12px; font-size:15px; color:darkblue;}
+.v_caption .dot{ float:left; margin: 6px 20px;}
+.v_caption .dot span{display:block; float:left; margin-left:2px;width:10px; height:10px;border-radius:10px; background-color:bisque; }
+.v_caption .dot .current{ background-color:#00008B;}
+.v_caption .arrow{ float:left; margin-left:20px;}
+.v_caption .arrow span{margin-left:2px;}
+.v_caption a{display:block; float:right; margin-right:10px;text-decoration:none; color:#00008B;}
+.v_caption a:hover{color:cadetblue;}
+.v_content{ position:relative;overflow:hidden;width:600px;height:102px;}
+.v_content .list{ position:absolute;width:16800px;}
+.v_content .list img{width:140px;height:102px;}
+.v_content ul{ float:left;}
+.v_content .list li{float:left;padding:0 5px;list-style-type: none;}
+
