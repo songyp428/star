@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>利用canvas和JavaScript实现排序</title>
+	</head>
+	<body>
+		<!--插入排序-->
+		<div>
+			<div>
+				<span>插入排序：</span>
+				<input type="text" id="insert_in" name = "sort"  placeholder="请输入数组的大小">				
+				<button id="insert_make">生成</button>
+				<button id="insert_sort">排序</button>
+		    </div>
+		    <canvas id="insert_canvas" width="800px" height="500px"></canvas>
+		</div>
+		<!-- 希尔排序-->
+		<div>
+			<div>
+				<span>插入排序的改进：希尔排序：</span>
+				<input type="text" id="shell_in" name = "sort"  placeholder="请输入数组的大小">
+				<button id="shell_make">生成</button>
+				<button id="shell_sort">排序</button>
+		    </div>
+		    <canvas id="shell_canvas" width="800px" height="500px"></canvas>
+		</div>
+		<!--冒泡排序-->
+		<div>
+			<div>
+				<span>冒泡排序：</span>
+				<input type="text" id="bublle_in" name = "sort"  placeholder="请输入数组的大小">				
+				<button id="bubble_make">生成</button>
+				<button id="bubble_sort">排序</button>
+		    </div>
+		    <canvas id="bubble_canvas" width="800px" height="500px"></canvas>
+		</div>
+		<!--冒泡排序值鸡尾酒排序-->
+		<div>
+			<div>
+				<span>冒泡排序之鸡尾酒排序：</span>
+				<input type="text" id="cbublle_in" name = "sort"  placeholder="请输入数组的大小">				
+				<button id="cbubble_make">生成</button>
+				<button id="cbubble_sort">排序</button>
+		    </div>
+		    <canvas id="cbubble_canvas" width="800px" height="500px"></canvas>
+		</div>
+		
+		<!--选择排序-->
+		<div>
+			<div>
+				<span>选择排序：</span>
+				<input type="text" id="select_in" name = "sort"  placeholder="请输入数组的大小">				
+				<button id="select_make">生成</button>
+				<button id="select_sort">排序</button>
+		    </div>
+		    <canvas id="select_canvas" width="800px" height="500px"></canvas>
+		</div>
+		
+	</body>
+	<script type="text/javascript">
+//		window.onload = function(){
+			//插入排序
+			var insert_num = [];
+			
+			var insert_input = document.getElementById("insert_in");
+			var insert_make = document.getElementById("insert_make");
+			var insert_sort = document.getElementById("insert_sort");
+			var insert_canvas = document.getElementById("insert_canvas");
+			var insert_context = insert_canvas.getContext("2d");
+			//冒泡排序
+			var bubble_num = [];
+			var bubble_input = document.getElementById("bublle_in");
+			var bubble_make = document.getElementById("bubble_make");
+	    	var bubble_sort = document.getElementById("bubble_sort");
+			var bubble_canvas = document.getElementById("bubble_canvas");
+			var bubble_context = bubble_canvas.getContext("2d");
+			
+			//冒泡排序之鸡尾酒排序
+			var cbubble_num = [];
+			var cbubble_input = document.getElementById("cbublle_in");
+			var cbubble_make = document.getElementById("cbubble_make");
+	    	var cbubble_sort = document.getElementById("cbubble_sort");
+			var cbubble_canvas = document.getElementById("cbubble_canvas");
+			var cbubble_context = cbubble_canvas.getContext("2d");
+			
+			//冒泡排序之鸡尾酒排序
+			var select_num = [];
+			var select_input = document.getElementById("select_in");
+			var select_make = document.getElementById("select_make");
+	    	var select_sort = document.getElementById("select_sort");
+			var select_canvas = document.getElementById("select_canvas");
+			var select_context = select_canvas.getContext("2d");
+			
+			//希尔排序
+			var shell_num = [];
+			var shell_input = document.getElementById("shell_in");
+			var shell_make = document.getElementById("shell_make");
+	    	var shell_sort = document.getElementById("shell_sort");
+			var shell_canvas = document.getElementById("shell_canvas");
+			var shell_context = shell_canvas.getContext("2d");
+			//画轴
+			function init(canvas,context){
+				context.beginPath();
+				context.moveTo(0,0);
+				context.lineTo(0,canvas.height);
+				context.lineTo(canvas.width,canvas.height);
+				context.stroke();
+				context.closePath();				
+			}	
+			
+			init(insert_canvas,insert_context);
+			init(bubble_canvas,bubble_context);
+			init(cbubble_canvas,cbubble_context);
+			init(select_canvas,select_context);
+			init(shell_canvas,shell_context);
+			//随机生成数组
+			function MakeArr(size){
+				let _arr = [];
+				for(let i = 0;i<size;i++){
+					_arr[i] = i+1 ;
+				}
+				for(let i = 0; i<size ; i++){
+					let j = parseInt(Math.random()*size) ;
+					let temp = _arr[j];
+					_arr[j] = _arr[i];
+					_arr[i] = temp;
+				}
+				return _arr;
+			}
+			
+			function Click_Sort(name,make,sort,input_size,canvas,context,num){
+	//			生成随机数组
+				make.onclick = function(){
+					let size = parseInt(input_size.value);
+					num = MakeArr(size);
+					Draw(canvas,context,num);
+				}
+	//			点击排序
+				sort.onclick = function(){
+					eval(name+'(canvas,context,num)');
+					
+				}
+			}
+			
+			Click_Sort('Insert_sort',insert_make,insert_sort,insert_input,insert_canvas,insert_context,insert_num);
+			Click_Sort('Bubble_sort',bubble_make,bubble_sort,bubble_input,bubble_canvas,bubble_context,bubble_num);
+			Click_Sort('Cbubble_sort',cbubble_make,cbubble_sort,cbubble_input,cbubble_canvas,cbubble_context,cbubble_num);
+			Click_Sort('Select_sort',select_make,select_sort,select_input,select_canvas,select_context,select_num);
+			Click_Sort('Shell_sort',shell_make,shell_sort,shell_input,shell_canvas,shell_context,shell_num);
+
+//
+			//画矩形块
+			function Draw(canvas,context,num,flag1,flag2){
+				let Cwidth = canvas.width;
+				let Cheigth = canvas.height;
+				context.clearRect(1, 0, Cwidth-1, Cheigth-1);
+				let max = Math.max.apply(null,num);
+				//let w = 2*Cwidth/(3*num.length-1);
+				let w = Cwidth/(2*num.length-1);
+				let _blank = w/1.5;
+				let cx = Cwidth*0.06;//
+				//console.log("num size = "+num.length);
+				for(let i = 0;i<num.length ; i++){	
+					if(flag1 == i){
+						context.fillStyle = "red";
+					}else if(flag2 == i){
+						context.fillStyle = "blue";
+					}else{
+						context.fillStyle = "black";
+					}
+					
+					DrawRect(context,cx,Cheigth,w,num[i]*Cheigth*0.9/max);
+					//console.log(cx);
+					cx+=(_blank+w);
+				}
+				
+			}
+			
+			function DrawRect(context,cx,cy,width,height){
+				context.fillRect(cx,cy-height,width,height);
+			}
+			
+			//插入排序
+			function Insert_sort(canvas,context,num){
+				let t = 0;
+				for(let i=1;i<num.length;i++){
+					
+					let targe = num[i];
+					let j = i-1 ;
+					while(j>=0 && targe < num[j]){
+						num[j+1] = num[j];
+						j--;
+						
+					}
+					num[j+1] = targe;
+					t++;
+					let _num = CopyNum(num);
+					//console.log(_num);
+					setTimeout(function(){
+						Draw(canvas,context,_num,i);
+					},1000 *t);
+				}
+				
+				return num;
+			}
+            //冒泡排序			
+			function Bubble_sort(canvas,context,num){
+				let t = 0;
+				for(let i=0;i<num.length;i++){
+					for(let j=num.length-1;j>i;j--)
+					{
+						
+						if(num[j]<num[j-1])
+						{
+							let temp = num[j-1];
+							num[j-1] = num[j];
+							num[j] = temp;
+						}
+						t++;
+						let _num = CopyNum(num);
+						//console.log(_num);
+						setTimeout(function(){
+							Draw(canvas,context,_num,i-1,j-1);
+						},300 *t);
+					}
+					
+				}
+				return num;
+				
+			}
+            
+            //冒泡排序之鸡尾酒排序
+            function Cbubble_sort(canvas,context,num){
+            	let left = 0;
+            	let right = num.length-1;
+            	let t =0;
+            	while(left<right){
+            		for(let i = left;i<right;i++){
+            			if(num[i]>num[i+1]){
+            				let temp = num[i];
+            				num[i] = num[i+1];
+            				num[i+1] = temp;
+            			}	 
+            			t++;
+		            	let _num = CopyNum(num);
+		            	setTimeout(function(){
+		            		Draw(canvas,context,_num,i+1);
+		            	},300*t);
+            		}
+            		
+            		right--;
+            		for(let j= right;j>left;j--){
+            			if(num[j]<num[j-1]){
+            				let temp1 = num[j];
+            				num[j] = num[j-1];
+            				num[j-1] = temp1;
+            			}
+            			t++;
+		            	let _num1 = CopyNum(num);
+		            	setTimeout(function(){
+		            	    Draw(canvas,context,_num1,j);
+		            			
+		            	},300*t)
+            		}
+            		
+            		left++;
+            	
+	            	
+            	}
+            	return num;
+            }
+            //选择排序
+            function Select_sort(canvas,context,num){
+            	let t = 0;
+            	let si,smin;
+            	for(let i=0;i<=num.length-2;i++){
+            		let min = i;
+            		
+            		for(let j =i+1;j<=num.length-1;j++){
+            			if(num[j]<num[min]){
+            				min = j;
+            			}
+            		}
+            		t++;
+            		let _num = CopyNum(num);
+            		setTimeout(function(){
+            			Draw(canvas,context,_num,i,min);
+            		},500*t);
+            		if(min!=i){
+            			let temp = num[i];
+            			num[i] =num[min];
+            			num[min] = temp;
+            		}
+            		si = i;
+            		smin = min;
+            	}
+            	t++;
+            	let _num = CopyNum(num);
+            		setTimeout(function(){
+            			Draw(canvas,context,_num,si,smin);
+            		},500*t);
+            	return num;
+            }
+            //希尔排序
+            function Shell_sort(canvas,context,num){
+            	let h =0;
+            	let t =0;
+            	while(h<=num.length){
+            		h = h*3 + 1;
+            	}
+            	//console.log(h);
+            	while(h>=1){
+            		for(i = h;i<num.length;i++){
+            			j = i - h ;
+            			//console.log("i="+i+",j= "+j+",h="+h);
+            			let temp  = num[i];
+            			while((j>=0)&&(num[j]>temp))
+            			{
+            				num[j+h] = num[j];
+            				j = j - h;
+            			}
+            			num[j+h] = temp;
+            		}
+            		t++;
+            		let _num = CopyNum(num);
+            		setTimeout(function(){
+            			Draw(canvas,context,_num)
+            		},1000*t)
+            		h = (h-1)/3;
+            	}
+            	return num;
+            }
+            
+			//copy
+			function CopyNum(num){
+				let _num = [];
+				for(let i=0;i<num.length;i++){
+					_num[i] = num[i];
+				}
+				return _num;
+			}
+
+//		}
+	</script>
+</html>
