@@ -1,0 +1,4 @@
+
+*{margin:0;padding:0;}
+#box{margin:0 auto;height:477px;border-right:1px solid #ccc;border-bottom:1px solid #ccc;overflow: hidden;position:relative;}
+#box img{border-left: 1px solid #ccc ;position:absolute;display: block;left:0;}
